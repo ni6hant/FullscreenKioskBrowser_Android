@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace = 'com.simplekioskbrowser'
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = 'com.simplekioskbrowser'
+        minSdk = 24
+        targetSdk = 35
+        versionCode = 1
+        versionName = '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    // Intentionally no external implementation dependencies: this MVP uses only the
+    // Android framework and Kotlin standard library. Keeping the dependency surface
+    // minimal reduces build risk and supply-chain exposure.
+    testImplementation 'junit:junit:4.13.2'
+}
