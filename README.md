@@ -1,46 +1,81 @@
 # Simple Android Kiosk Browser
 
-## Project introduction
-A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a discreet edge swipe.
+A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a discreet left-edge swipe.
 
-## Problem statement
-A phone needs to behave as a dedicated web display rather than a general-purpose browser, with minimal user-facing controls and automatic recovery.
+## Device used for verification
+- Xiaomi M2101K6P (Redmi Note 10), LineageOS
+- Android 16 / API 36
+- ADB serial `ab082808`, authorized over USB
 
-## Objectives
-- Open a configurable URL in an immersive, fullscreen browser.
-- Keep the screen awake while kiosk mode is active.
-- Provide an edge-swipe gesture to reveal settings.
-- Recover from loss/restoration of connectivity and periodically refresh the page.
-- Offer a low-battery action configurable around a 20% threshold.
+## Build
 
-## Scope
-**Included:** single-site WebView, settings UI, persisted configuration, edge gesture, fullscreen immersive presentation, network-aware recovery, interval reload, battery threshold monitoring while app is active, and device-based testing.
+Requires the Android SDK (`C:\Android` on the dev machine) and Java 21. A `local.properties` file pointing `sdk.dir` at your SDK is needed (it is gitignored and machine-specific).
 
-**Not included in MVP:** general browsing UI, multiple tabs, bookmarks, remote management, MDM integration, app-store distribution, content filtering, or guaranteed device lockdown against OS navigation. True Android lock-task kiosk mode requires device-owner/DPC provisioning or an applicable allowlisting arrangement and is not assumed.
+```powershell
+# Windows PowerShell
+.\gradlew.bat assembleDebug
+```
 
-## Target user
-The owner/operator of a dedicated Android phone or tablet displaying a web page.
+or with the system Gradle:
 
-## Features
-- Configurable URL and basic URL validation.
-- Fullscreen display with Android system bars hidden as far as the OS allows.
-- `FLAG_KEEP_SCREEN_ON` while the kiosk activity is foregrounded.
-- Settings reveal via swipe from the left edge; settings include URL and recovery/power options.
-- Reload on network connectivity restoration, optionally enabled.
-- Periodic reload on configurable interval, optionally enabled.
-- Reload or retry behavior while offline and when connectivity returns.
-- Battery threshold action, default 20%, with explicit disclosure of device-policy constraints.
+```powershell
+gradle assembleDebug
+```
 
-## High-level architecture
-Native Android application in Kotlin, using Android WebView, Android lifecycle APIs, ConnectivityManager network callbacks, BatteryManager/battery broadcasts, and locally persisted preferences. No backend or cloud service is required.
+Output APK: `app/build/outputs/apk/debug/app-debug.apk`
 
-## Assumptions and open questions
-- Android version and device model are not yet known; agent must record them using ADB.
-- The connected test device is available over ADB and currently reports serial `ab082808` (`adb devices` output supplied by the requester). Verify before targeting it; never assume it is still connected.
-- “Close screen if battery less than 20%” means turn the display off or otherwise stop kiosk display activity when the battery falls below the threshold. True power-off/lock-screen control may require Device Administrator/device-owner capabilities; implementation must explain the feasible device-specific behavior and avoid silently substituting a different action. Prefer an explicit configurable action and conservative default.
-- “Auto reload on web disconnect” is interpreted as reload/retry when the page reports a load failure or connectivity is restored, with debouncing to avoid reload storms.
-- Settings gesture is a left-edge swipe into the screen. Settings should not be accidentally opened by ordinary page scrolling; gesture conflicts need testing.
-- A settings PIN is not required by the source brief; consider it a clearly labelled optional enhancement only if warranted.
+## Install and run on a device
 
-## How to use the agent prompt
-Copy `AGENT_PROMPT.md` into an agentic coding tool operating on the Android project workspace, and supply the accompanying documents. The agent is expected to implement, test, and checkpoint work locally in Git. Do not treat this documentation package as an implementation or as proof that device testing has occurred.
+```powershell
+adb install -r app\build\outputs\apk\debug\app-debug.apk
+adb shell am start -n com.simplekioskbrowser/.MainActivity
+```
+
+## First-run setup
+
+On first launch, if no URL is saved, the settings panel opens. Enter a valid `http://` or `https://` URL, then tap **SAVE**. The page loads fullscreen and stays awake. Open settings again anytime by swiping inward from the left screen edge; tap **RETURN TO PAGE** to close settings.
+
+## Settings
+
+| Setting | Meaning |
+|---|---|
+| Website URL | The single URL loaded by the kiosk (http/https only). |
+| Reload when connectivity returns | Reload the page when network connectivity is restored (debounced). |
+| Retry on page load failure | Retry on recoverable WebView network errors (capped to avoid loops). |
+| Periodic page refresh | Enable automatic periodic reloads. |
+| Refresh interval | Positive number + unit (minutes/hours), lifecycle-aware (paused when not foregrounded). |
+| Low battery threshold (%) | 0–100, default 20%. |
+| Low battery action | `None`, `Dim screen (not a true power-off)`, or `Pause refreshes`. |
+
+## Security
+
+- Only `INTERNET` and `ACCESS_NETWORK_STATE` permissions.
+- WebView: JavaScript enabled for modern-site compatibility (documented trade-off); no file access, no JavaScript bridges, no universal access, safe browsing enabled where available.
+- Non-HTTP(S) URI schemes are blocked in the WebView.
+- SSL certificate errors are never bypassed: `onReceivedSslError` cancels the handler and shows a clear error.
+- No analytics, telemetry, cloud backend, or external data transmission beyond normal web navigation.
+- No credentials or secrets are logged.
+
+## Battery policy limitations (device-policy feasibility)
+
+A normal app cannot power off or lock the screen without Device Administrator / device-owner provisioning or vendor-specific APIs. This app intentionally does not provision device-owner status. The low-battery options are:
+- **Dim screen** — lowers this app window's brightness only (NOT a true screen power-off).
+- **Pause refreshes** — pauses periodic reloads and shows a notice.
+- **None** — no action.
+
+The app disclaims this on the settings screen: *"This app cannot power off or lock the screen without device-owner/DPC provisioning."*
+
+## Testing
+
+```powershell
+.\gradlew.bat testDebugUnitTest
+```
+
+37 unit tests cover URL validation, settings validation/persistence, reload debounce/coalescing, auto-attempt capping, periodic timer lifecycle (no duplicates), pause/resume, and battery threshold logic.
+
+## Known limitations
+
+- True kiosk lock-down (preventing OS navigation/home) requires device-owner/DPC provisioning and is out of scope.
+- Immersive fullscreen is best-effort and can be interrupted by system gestures/policy.
+- Screen-on consumes battery while kiosk is active.
+- The app does not manipulate battery level or system provisioning for testing; low-battery behaviour is unit-tested via pure logic.

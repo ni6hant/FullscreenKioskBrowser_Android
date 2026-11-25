@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Simple Kiosk Browser</string>
+
+    <!-- Settings panel -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_return">Return to page</string>
+    <string name="settings_save">Save</string>
+    <string name="settings_url_label">Website URL</string>
+    <string name="settings_url_hint">https://example.com</string>
+    <string name="settings_url_required">Enter a valid http:// or https:// URL</string>
+    <string name="settings_reload_on_connectivity">Reload when connectivity returns</string>
+    <string name="settings_reload_on_webview_error">Retry on page load failure</string>
+    <string name="settings_periodic_reload">Periodic page refresh</string>
+    <string name="settings_interval_label">Refresh interval</string>
+    <string name="settings_interval_hint">5</string>
+    <string name="settings_unit_minutes">Minutes</string>
+    <string name="settings_unit_hours">Hours</string>
+    <string name="settings_battery_label">Low battery threshold (%)</string>
+    <string name="settings_battery_hint">20</string>
+    <string name="settings_battery_action">Low battery action</string>
+    <string name="settings_action_none">None</string>
+    <string name="settings_action_dim">Dim screen (not a true power-off)</string>
+    <string name="settings_action_pause">Pause refreshes</string>
+
+    <!-- States -->
+    <string name="status_loading">Loading&#8230;</string>
+    <string name="status_offline">You are offline. Reconnecting when connectivity returns&#8230;</string>
+    <string name="status_error_unable">Unable to load page</string>
+    <string name="status_ssl_error">Secure connection failed (certificate error).</string>
+    <string name="status_invalid_url">No valid URL configured. Open settings to set one.</string>
+    <string name="status_low_battery">Battery is low. Refreshes paused.</string>
+    <string name="action_retry">Retry</string>
+
+    <!-- Battery action disclosure -->
+    <string name="battery_disclaimer">This app cannot power off or lock the screen without device-owner/DPC provisioning. The \"Dim screen\" option lowers this app window\u2019s brightness only; it is not a true screen power-off.</string>
+</resources>

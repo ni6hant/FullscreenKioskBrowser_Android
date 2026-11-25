@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Primary kiosk WebView. Fills the screen; kept awake while foregrounded. -->
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Left-edge gesture strip. Only a deliberate inward horizontal swipe opens settings. -->
+    <com.simplekioskbrowser.ui.EdgeSwipeView
+        android:id="@+id/edge_swipe_view"
+        android:layout_width="@dimen/edge_strip_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/transparent" />
+
+    <!-- Dimmed scrim shown behind the settings panel when it is open. -->
+    <View
+        android:id="@+id/settings_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/settings_scrim"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
+    <!-- Loading / offline / error overlay centred over the WebView. -->
+    <LinearLayout
+        android:id="@+id/error_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxWidth="260dp"
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/error_retry"
+            style="@style/Widget.SimpleKioskBrowser.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/action_retry"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- Low-battery notice shown when the low-battery policy activates (e.g. paused refreshes). -->
+    <TextView
+        android:id="@+id/low_battery_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="#aa222222"
+        android:padding="8dp"
+        android:text="@string/status_low_battery"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <!-- Settings panel. Slides in from the left edge; initially off-screen. -->
+    <ScrollView
+        android:id="@+id/settings_panel"
+        android:layout_width="@dimen/settings_panel_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/settings_panel_bg"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/settings_padding">
+
+            <TextView
+                android:id="@+id/settings_title"
+                style="@style/Widget.SimpleKioskBrowser.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_section_spacing"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
+                android:text="@string/settings_title"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Website URL (http:// or https://)"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/settings_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:hint="@string/settings_url_hint"
+                android:inputType="textUri"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textColorHint="#999999" />
+
+            <TextView
+                android:id="@+id/settings_url_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:textColor="@color/error_text"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/settings_reload_connectivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="@string/settings_reload_on_connectivity" />
+
+            <CheckBox
+                android:id="@+id/settings_reload_webview_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="@string/settings_reload_on_webview_error" />
+
+            <CheckBox
+                android:id="@+id/settings_periodic_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="@string/settings_periodic_reload" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/settings_field_margin">
+
+                <EditText
+                    android:id="@+id/settings_interval"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/settings_interval_hint"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@color/text_primary" />
+
+                <Spinner
+                    android:id="@+id/settings_interval_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/interval_units" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/settings_field_margin">
+
+                <EditText
+                    android:id="@+id/settings_battery_threshold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/settings_battery_hint"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:text="%"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/settings_battery_action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:entries="@array/battery_actions" />
+
+            <TextView
+                android:id="@+id/settings_battery_disclaimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="@string/battery_disclaimer"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/settings_section_spacing">
+
+                <Button
+                    android:id="@+id/settings_save"
+                    style="@style/Widget.SimpleKioskBrowser.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/settings_save" />
+
+                <Button
+                    android:id="@+id/settings_return"
+                    style="@style/Widget.SimpleKioskBrowser.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/settings_return" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

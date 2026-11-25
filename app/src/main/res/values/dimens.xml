@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="edge_strip_width">24dp</dimen>
+    <dimen name="settings_panel_width">320dp</dimen>
+    <dimen name="settings_padding">16dp</dimen>
+    <dimen name="settings_field_margin">8dp</dimen>
+    <dimen name="settings_section_spacing">12dp</dimen>
+</resources>

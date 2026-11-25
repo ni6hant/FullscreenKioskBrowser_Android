@@ -1,0 +1,9 @@
+// Top-level build configuration for Simple Android Kiosk Browser.
+//
+// Plugin and dependency repositories are declared centrally in settings.gradle
+// (pluginManagement / dependencyResolutionManagement). This keeps repository
+// declaration in one place and avoids conflicts with Gradle's repository modes.
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
