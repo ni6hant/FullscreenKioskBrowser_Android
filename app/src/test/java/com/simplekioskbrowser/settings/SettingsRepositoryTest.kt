@@ -79,6 +79,8 @@ class SettingsRepositoryTest {
         assertEquals("minutes", s.periodicIntervalUnit)
         assertEquals(20, s.batteryThreshold)
         assertEquals(BatteryAction.NONE, s.batteryAction)
+        assertEquals(OrientationLock.AUTO, s.orientationLock)
+        assertEquals(30, s.autoReloadIntervalSeconds)
     }
 
     @Test

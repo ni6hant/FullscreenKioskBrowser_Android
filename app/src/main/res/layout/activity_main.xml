@@ -212,6 +212,54 @@
                 android:entries="@array/battery_actions" />
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Forced orientation"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/settings_orientation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:entries="@array/orientation_options" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Auto-reload cooldown (seconds)"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/settings_auto_reload_interval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:hint="30"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textColorHint="#999999" />
+
+            <CheckBox
+                android:id="@+id/settings_pinch_zoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Pinch to zoom (two fingers)" />
+
+            <CheckBox
+                android:id="@+id/settings_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Clear cache on every refresh" />
+
+            <TextView
                 android:id="@+id/settings_battery_disclaimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

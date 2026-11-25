@@ -36,6 +36,15 @@ class WebViewController(
     var onReloadRequested: (() -> Unit)? = null
     var onUrlLoadFinished: ((url: String?) -> Unit)? = null
 
+    var pinchZoomEnabled: Boolean = true
+        set(value) {
+            field = value
+            webView?.settings?.setBuiltInZoomControls(value)
+            webView?.settings?.setDisplayZoomControls(false)
+        }
+
+    var clearCacheOnRefresh: Boolean = false
+
     init {
         val activity = context as? android.app.Activity
             ?: error("WebViewController must be created from an Activity context")
@@ -71,7 +80,7 @@ class WebViewController(
         settings.allowUniversalAccessFromFileURLs = false
         settings.blockNetworkLoads = false
 
-        settings.builtInZoomControls = false
+        settings.builtInZoomControls = pinchZoomEnabled
         settings.displayZoomControls = false
 
         // A UA that identifies this as a kiosk browser helps sites render appropriately.
@@ -98,6 +107,9 @@ class WebViewController(
     fun reload() {
         hideOverlay()
         showLoading(true)
+        if (clearCacheOnRefresh) {
+            webView?.clearCache(true)
+        }
         webView?.reload()
     }
 

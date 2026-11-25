@@ -25,6 +25,10 @@ class SettingsRepository(private val prefs: SharedPreferences) {
     private val PERIODIC_UNIT = "periodic_unit"
     private val BATTERY_THRESHOLD = "battery_threshold"
     private val BATTERY_ACTION = "battery_action"
+    private val ORIENTATION_LOCK = "orientation_lock"
+    private val AUTO_RELOAD_INTERVAL = "auto_reload_interval"
+    private val PINCH_ZOOM = "pinch_zoom"
+    private val CLEAR_CACHE = "clear_cache"
 
     /** Returns the currently persisted settings (defaults if never saved). */
     fun getSettings(): KioskSettings {
@@ -42,7 +46,14 @@ class SettingsRepository(private val prefs: SharedPreferences) {
             batteryAction = prefs.getString(BATTERY_ACTION, BatteryAction.NONE).let { raw ->
                 val v = raw ?: BatteryAction.NONE
                 if (SettingsValidation.isValidBatteryAction(v)) v else BatteryAction.NONE
-            }
+            },
+            orientationLock = prefs.getString(ORIENTATION_LOCK, OrientationLock.AUTO).let { raw ->
+                val v = raw ?: OrientationLock.AUTO
+                if (SettingsValidation.isValidOrientation(v)) v else OrientationLock.AUTO
+            },
+            autoReloadIntervalSeconds = prefs.getInt(AUTO_RELOAD_INTERVAL, 30).coerceIn(5, 3600),
+            pinchZoomEnabled = prefs.getBoolean(PINCH_ZOOM, true),
+            clearCacheOnRefresh = prefs.getBoolean(CLEAR_CACHE, false)
         )
     }
 
@@ -58,6 +69,10 @@ class SettingsRepository(private val prefs: SharedPreferences) {
             .putString(PERIODIC_UNIT, settings.periodicIntervalUnit)
             .putInt(BATTERY_THRESHOLD, settings.batteryThreshold)
             .putString(BATTERY_ACTION, settings.batteryAction)
+            .putString(ORIENTATION_LOCK, settings.orientationLock)
+            .putInt(AUTO_RELOAD_INTERVAL, settings.autoReloadIntervalSeconds)
+            .putBoolean(PINCH_ZOOM, settings.pinchZoomEnabled)
+            .putBoolean(CLEAR_CACHE, settings.clearCacheOnRefresh)
             .apply() // asynchronous; sufficient for settings persistence
         return true
     }
@@ -68,7 +83,9 @@ class SettingsRepository(private val prefs: SharedPreferences) {
             SettingsValidation.isValidInterval(settings.periodicInterval) &&
             SettingsValidation.isValidIntervalUnit(settings.periodicIntervalUnit) &&
             SettingsValidation.isValidBatteryThreshold(settings.batteryThreshold) &&
-            SettingsValidation.isValidBatteryAction(settings.batteryAction)
+            SettingsValidation.isValidBatteryAction(settings.batteryAction) &&
+            SettingsValidation.isValidOrientation(settings.orientationLock) &&
+            SettingsValidation.isValidAutoReloadInterval(settings.autoReloadIntervalSeconds)
     }
 
     /** Convenience: validate and save a URL, keeping the other fields unchanged. */

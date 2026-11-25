@@ -1,11 +1,10 @@
 package com.simplekioskbrowser.settings
 
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/** Pure validation logic: no Android dependencies, fast and deterministic. */
 class SettingsValidationTest {
 
     @Test
@@ -20,7 +19,6 @@ class SettingsValidationTest {
 
     @Test
     fun acceptsIntranetHostWithoutTld() {
-        // A kiosk may point at a local server; a TLD is not required, only a valid scheme.
         assertTrue(SettingsValidation.isValidUrl("http://192.168.1.50/"))
         assertTrue(SettingsValidation.isValidUrl("https://my-local-server"))
     }
@@ -57,7 +55,7 @@ class SettingsValidationTest {
     fun intervalBounds() {
         assertTrue(SettingsValidation.isValidInterval(1))
         assertTrue(SettingsValidation.isValidInterval(30))
-        assertTrue(SettingsValidation.isValidInterval(10_080)) // 7 days
+        assertTrue(SettingsValidation.isValidInterval(10_080))
         assertFalse(SettingsValidation.isValidInterval(0))
         assertFalse(SettingsValidation.isValidInterval(-5))
         assertFalse(SettingsValidation.isValidInterval(10_081))
@@ -74,7 +72,7 @@ class SettingsValidationTest {
     @Test
     fun batteryThresholdBounds() {
         assertTrue(SettingsValidation.isValidBatteryThreshold(0))
-        assertTrue(SettingsValidation.isValidBatteryThreshold(20)) // default
+        assertTrue(SettingsValidation.isValidBatteryThreshold(20))
         assertTrue(SettingsValidation.isValidBatteryThreshold(100))
         assertFalse(SettingsValidation.isValidBatteryThreshold(-1))
         assertFalse(SettingsValidation.isValidBatteryThreshold(101))
@@ -87,6 +85,27 @@ class SettingsValidationTest {
         assertFalse(SettingsValidation.isValidBatteryAction("dim"))
         assertFalse(SettingsValidation.isValidBatteryAction("poweroff"))
         assertFalse(SettingsValidation.isValidBatteryAction(""))
+    }
+
+    @Test
+    fun autoReloadIntervalBounds() {
+        assertTrue(SettingsValidation.isValidAutoReloadInterval(5))
+        assertTrue(SettingsValidation.isValidAutoReloadInterval(30))
+        assertTrue(SettingsValidation.isValidAutoReloadInterval(3600))
+        assertFalse(SettingsValidation.isValidAutoReloadInterval(4))
+        assertFalse(SettingsValidation.isValidAutoReloadInterval(0))
+        assertFalse(SettingsValidation.isValidAutoReloadInterval(3601))
+    }
+
+    @Test
+    fun orientationValues() {
+        assertTrue(SettingsValidation.isValidOrientation(OrientationLock.AUTO))
+        assertTrue(SettingsValidation.isValidOrientation(OrientationLock.LANDSCAPE))
+        assertTrue(SettingsValidation.isValidOrientation(OrientationLock.PORTRAIT))
+        assertTrue(SettingsValidation.isValidOrientation(OrientationLock.REVERSE_LANDSCAPE))
+        assertTrue(SettingsValidation.isValidOrientation(OrientationLock.REVERSE_PORTRAIT))
+        assertFalse(SettingsValidation.isValidOrientation("upside_down"))
+        assertFalse(SettingsValidation.isValidOrientation(""))
     }
 
     @Test

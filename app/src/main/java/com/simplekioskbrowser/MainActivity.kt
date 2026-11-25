@@ -1,6 +1,7 @@
 package com.simplekioskbrowser
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -19,6 +20,7 @@ import com.simplekioskbrowser.reload.ReloadCoordinator
 import com.simplekioskbrowser.reload.ReloadReason
 import com.simplekioskbrowser.settings.BatteryAction
 import com.simplekioskbrowser.settings.KioskSettings
+import com.simplekioskbrowser.settings.OrientationLock
 import com.simplekioskbrowser.settings.SettingsRepository
 import com.simplekioskbrowser.settings.SettingsValidation
 import com.simplekioskbrowser.ui.EdgeSwipeView
@@ -128,6 +130,12 @@ class MainActivity : Activity() {
         actionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.settingsBatteryAction.adapter = actionAdapter
 
+        val orientationAdapter = ArrayAdapter.createFromResource(
+            this, R.array.orientation_options, android.R.layout.simple_spinner_item
+        )
+        orientationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.settingsOrientation.adapter = orientationAdapter
+
         // Settings panel starts off-screen to the left.
         binding.settingsPanel.post {
             panelWidth = binding.settingsPanel.width
@@ -231,6 +239,16 @@ class MainActivity : Activity() {
             BatteryAction.PAUSE -> 1
             else -> 0
         })
+        binding.settingsOrientation.setSelection(when (settings.orientationLock) {
+            OrientationLock.LANDSCAPE -> 1
+            OrientationLock.PORTRAIT -> 2
+            OrientationLock.REVERSE_LANDSCAPE -> 3
+            OrientationLock.REVERSE_PORTRAIT -> 4
+            else -> 0
+        })
+        binding.settingsAutoReloadInterval.setText(settings.autoReloadIntervalSeconds.toString())
+        binding.settingsPinchZoom.isChecked = settings.pinchZoomEnabled
+        binding.settingsClearCache.isChecked = settings.clearCacheOnRefresh
     }
 
     private fun readSettings(): KioskSettings {
@@ -246,6 +264,15 @@ class MainActivity : Activity() {
             "Pause refreshes" -> BatteryAction.PAUSE
             else -> BatteryAction.NONE
         }
+        val orientation = when (binding.settingsOrientation.selectedItem.toString()) {
+            "Landscape" -> OrientationLock.LANDSCAPE
+            "Portrait" -> OrientationLock.PORTRAIT
+            "Reverse Landscape" -> OrientationLock.REVERSE_LANDSCAPE
+            "Reverse Portrait" -> OrientationLock.REVERSE_PORTRAIT
+            else -> OrientationLock.AUTO
+        }
+        val autoReloadSeconds = binding.settingsAutoReloadInterval.text.toString().trim().toIntOrNull()
+            ?.coerceIn(5, 3600) ?: 30
         return KioskSettings(
             url = binding.settingsUrl.text.toString().trim().takeIf { it.isNotEmpty() },
             reloadOnConnectivity = binding.settingsReloadConnectivity.isChecked,
@@ -254,7 +281,11 @@ class MainActivity : Activity() {
             periodicInterval = interval,
             periodicIntervalUnit = unit,
             batteryThreshold = threshold,
-            batteryAction = action
+            batteryAction = action,
+            orientationLock = orientation,
+            autoReloadIntervalSeconds = autoReloadSeconds,
+            pinchZoomEnabled = binding.settingsPinchZoom.isChecked,
+            clearCacheOnRefresh = binding.settingsClearCache.isChecked
         )
     }
 
@@ -277,6 +308,22 @@ class MainActivity : Activity() {
     private fun applySettings(settings: KioskSettings) {
         reloadOnConnectivity = settings.reloadOnConnectivity
         reloadOnWebViewError = settings.reloadOnWebViewError
+
+        // Configurable auto-reload cooldown (default 30s) to avoid frequent reloads on bad URLs.
+        reloadCoordinator.configureMinInterval(settings.autoReloadIntervalSeconds * 1000L)
+
+        // Pinch-to-zoom and clear-cache-on-refresh toggles.
+        webViewController.pinchZoomEnabled = settings.pinchZoomEnabled
+        webViewController.clearCacheOnRefresh = settings.clearCacheOnRefresh
+
+        // Forced orientation (FR optional: Auto/Landscape/Portrait/Reverse Landscape/Reverse Portrait)
+        requestedOrientation = when (settings.orientationLock) {
+            OrientationLock.LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            OrientationLock.PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            OrientationLock.REVERSE_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            OrientationLock.REVERSE_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
+            else -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
 
         val intervalMinutes = SettingsValidation.intervalToMinutes(
             settings.periodicInterval, settings.periodicIntervalUnit

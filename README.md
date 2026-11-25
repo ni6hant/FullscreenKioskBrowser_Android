@@ -44,8 +44,12 @@ On first launch, if no URL is saved, the settings panel opens. Enter a valid `ht
 | Retry on page load failure | Retry on recoverable WebView network errors (capped to avoid loops). |
 | Periodic page refresh | Enable automatic periodic reloads. |
 | Refresh interval | Positive number + unit (minutes/hours), lifecycle-aware (paused when not foregrounded). |
+| Auto-reload cooldown (seconds) | 5-3600, default 30. Minimum spacing between automatic reloads (connectivity/WebView errors) to prevent reload loops. |
+| Pinch to zoom (two fingers) | Enable/disable pinch-to-zoom on the page. |
+| Clear cache on every refresh | Clear the WebView cache before each reload. |
 | Low battery threshold (%) | 0–100, default 20%. |
-| Low battery action | `None`, `Dim screen (not a true power-off)`, or `Pause refreshes`. |
+| Low battery action | `None` or `Pause refreshes`. |
+| Forced orientation | `Auto`, `Landscape`, `Portrait`, `Reverse Landscape`, `Reverse Portrait`. |
 
 ## Security
 

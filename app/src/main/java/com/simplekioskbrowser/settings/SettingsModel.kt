@@ -15,15 +15,27 @@ package com.simplekioskbrowser.settings
  * @param batteryAction One of [BatteryAction].
  */
 data class KioskSettings(
-    val url: String? = null,
+    val url: String? = "http://192.168.29.174:8090",
     val reloadOnConnectivity: Boolean = false,
     val reloadOnWebViewError: Boolean = false,
     val periodicReloadEnabled: Boolean = false,
     val periodicInterval: Int = 30,
     val periodicIntervalUnit: String = "minutes",
     val batteryThreshold: Int = 20,
-    val batteryAction: String = BatteryAction.NONE
+    val batteryAction: String = BatteryAction.NONE,
+    val orientationLock: String = "auto",
+    val autoReloadIntervalSeconds: Int = 30,
+    val pinchZoomEnabled: Boolean = true,
+    val clearCacheOnRefresh: Boolean = false
 )
+
+object OrientationLock {
+    const val AUTO = "auto"
+    const val LANDSCAPE = "landscape"
+    const val PORTRAIT = "portrait"
+    const val REVERSE_LANDSCAPE = "reverse_landscape"
+    const val REVERSE_PORTRAIT = "reverse_portrait"
+}
 
 object BatteryAction {
     const val NONE = "none"
@@ -62,6 +74,15 @@ object SettingsValidation {
 
     fun isValidBatteryAction(action: String): Boolean =
         action == BatteryAction.NONE || action == BatteryAction.PAUSE
+
+    fun isValidOrientation(value: String): Boolean =
+        value == OrientationLock.AUTO ||
+            value == OrientationLock.LANDSCAPE ||
+            value == OrientationLock.PORTRAIT ||
+            value == OrientationLock.REVERSE_LANDSCAPE ||
+            value == OrientationLock.REVERSE_PORTRAIT
+
+    fun isValidAutoReloadInterval(seconds: Int): Boolean = seconds in 5..3600
 
     /** Normalises an interval into minutes regardless of the configured unit. */
     fun intervalToMinutes(interval: Int, unit: String): Int = when (unit) {

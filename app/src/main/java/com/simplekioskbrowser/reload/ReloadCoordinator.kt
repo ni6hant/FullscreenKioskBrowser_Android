@@ -28,7 +28,7 @@ typealias ReloadScheduler = (task: () -> Unit, delayMillis: Long) -> () -> Unit
 class ReloadCoordinator(
     private val onReload: () -> Unit,
     private val debounceMillis: Long = 1500,
-    private val minReloadIntervalMillis: Long = 5000,
+    private var minReloadIntervalMillis: Long = 30000,
     private val maxAutoAttempts: Int = 3,
     private val scheduler: ReloadScheduler? = null,
 ) {
@@ -62,6 +62,10 @@ class ReloadCoordinator(
 
     fun resetAutoAttempts() {
         autoAttempts = 0
+    }
+
+    fun configureMinInterval(millis: Long) {
+        minReloadIntervalMillis = millis.coerceAtLeast(1000)
     }
 
     fun isPending(): Boolean = pendingCancel != null
