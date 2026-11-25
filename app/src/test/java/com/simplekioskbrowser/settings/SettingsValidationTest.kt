@@ -83,8 +83,8 @@ class SettingsValidationTest {
     @Test
     fun batteryActions() {
         assertTrue(SettingsValidation.isValidBatteryAction(BatteryAction.NONE))
-        assertTrue(SettingsValidation.isValidBatteryAction(BatteryAction.DIM))
         assertTrue(SettingsValidation.isValidBatteryAction(BatteryAction.PAUSE))
+        assertFalse(SettingsValidation.isValidBatteryAction("dim"))
         assertFalse(SettingsValidation.isValidBatteryAction("poweroff"))
         assertFalse(SettingsValidation.isValidBatteryAction(""))
     }

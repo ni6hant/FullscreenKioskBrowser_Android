@@ -78,7 +78,7 @@ class SettingsRepositoryTest {
         assertEquals(30, s.periodicInterval)
         assertEquals("minutes", s.periodicIntervalUnit)
         assertEquals(20, s.batteryThreshold)
-        assertEquals(BatteryAction.DIM, s.batteryAction)
+        assertEquals(BatteryAction.NONE, s.batteryAction)
     }
 
     @Test

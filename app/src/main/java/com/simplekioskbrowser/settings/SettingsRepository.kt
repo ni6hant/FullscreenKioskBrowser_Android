@@ -39,9 +39,9 @@ class SettingsRepository(private val prefs: SharedPreferences) {
                 if (SettingsValidation.isValidIntervalUnit(v)) v else "minutes"
             },
             batteryThreshold = prefs.getInt(BATTERY_THRESHOLD, 20).coerceIn(0, 100),
-            batteryAction = prefs.getString(BATTERY_ACTION, BatteryAction.DIM).let { raw ->
-                val v = raw ?: BatteryAction.DIM
-                if (SettingsValidation.isValidBatteryAction(v)) v else BatteryAction.DIM
+            batteryAction = prefs.getString(BATTERY_ACTION, BatteryAction.NONE).let { raw ->
+                val v = raw ?: BatteryAction.NONE
+                if (SettingsValidation.isValidBatteryAction(v)) v else BatteryAction.NONE
             }
         )
     }

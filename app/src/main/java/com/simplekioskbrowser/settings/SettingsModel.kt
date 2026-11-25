@@ -22,12 +22,11 @@ data class KioskSettings(
     val periodicInterval: Int = 30,
     val periodicIntervalUnit: String = "minutes",
     val batteryThreshold: Int = 20,
-    val batteryAction: String = BatteryAction.DIM
+    val batteryAction: String = BatteryAction.NONE
 )
 
 object BatteryAction {
     const val NONE = "none"
-    const val DIM = "dim"
     const val PAUSE = "pause"
 }
 
@@ -62,7 +61,7 @@ object SettingsValidation {
     fun isValidBatteryThreshold(threshold: Int): Boolean = threshold in 0..100
 
     fun isValidBatteryAction(action: String): Boolean =
-        action == BatteryAction.NONE || action == BatteryAction.DIM || action == BatteryAction.PAUSE
+        action == BatteryAction.NONE || action == BatteryAction.PAUSE
 
     /** Normalises an interval into minutes regardless of the configured unit. */
     fun intervalToMinutes(interval: Int, unit: String): Int = when (unit) {

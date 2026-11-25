@@ -7,7 +7,6 @@
 
     <string-array name="battery_actions">
         <item>None</item>
-        <item>Dim screen (not a true power-off)</item>
         <item>Pause refreshes</item>
     </string-array>
 </resources>

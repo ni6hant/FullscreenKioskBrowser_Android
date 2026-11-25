@@ -12,7 +12,11 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleKioskBrowser"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="true">
+        <!-- Cleartext HTTP is permitted so a kiosk can point at a local/intranet server
+             (e.g. http://192.168.x.x). HTTPS remains the recommended scheme; this flag
+             only allows HTTP where the operator explicitly configures it. -->
+
 
         <activity
             android:name=".MainActivity"

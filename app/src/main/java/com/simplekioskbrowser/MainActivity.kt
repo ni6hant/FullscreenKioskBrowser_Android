@@ -228,8 +228,7 @@ class MainActivity : Activity() {
         binding.settingsBatteryThreshold.setText(settings.batteryThreshold.toString())
         binding.settingsIntervalUnit.setSelection(if (settings.periodicIntervalUnit == "hours") 1 else 0)
         binding.settingsBatteryAction.setSelection(when (settings.batteryAction) {
-            BatteryAction.PAUSE -> 2
-            BatteryAction.DIM -> 1
+            BatteryAction.PAUSE -> 1
             else -> 0
         })
     }
@@ -244,9 +243,8 @@ class MainActivity : Activity() {
         val thresholdText = binding.settingsBatteryThreshold.text.toString().trim()
         val threshold = thresholdText.toIntOrNull()?.coerceIn(0, 100) ?: 20
         val action = when (binding.settingsBatteryAction.selectedItem.toString()) {
-            "None" -> BatteryAction.NONE
             "Pause refreshes" -> BatteryAction.PAUSE
-            else -> BatteryAction.DIM
+            else -> BatteryAction.NONE
         }
         return KioskSettings(
             url = binding.settingsUrl.text.toString().trim().takeIf { it.isNotEmpty() },

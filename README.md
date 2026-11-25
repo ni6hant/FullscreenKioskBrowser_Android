@@ -59,9 +59,10 @@ On first launch, if no URL is saved, the settings panel opens. Enter a valid `ht
 ## Battery policy limitations (device-policy feasibility)
 
 A normal app cannot power off or lock the screen without Device Administrator / device-owner provisioning or vendor-specific APIs. This app intentionally does not provision device-owner status. The low-battery options are:
-- **Dim screen** — lowers this app window's brightness only (NOT a true screen power-off).
 - **Pause refreshes** — pauses periodic reloads and shows a notice.
 - **None** — no action.
+
+Brightness is always controlled by the system; this app never dims or powers off the screen.
 
 The app disclaims this on the settings screen: *"This app cannot power off or lock the screen without device-owner/DPC provisioning."*
 
