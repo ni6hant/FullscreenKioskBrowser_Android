@@ -1,5 +1,7 @@
 # Simple Android Kiosk Browser
 
+> **Declaration:** This initial APK release was generated with the assistance of an LLM (large language model). The author plans to manually review and modify the code going forward without LLM assistance.
+
 A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a discreet left-edge swipe.
 
 ## Device used for verification
