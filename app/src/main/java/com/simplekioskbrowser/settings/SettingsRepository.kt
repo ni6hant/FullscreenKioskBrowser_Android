@@ -29,6 +29,7 @@ class SettingsRepository(private val prefs: SharedPreferences) {
     private val AUTO_RELOAD_INTERVAL = "auto_reload_interval"
     private val PINCH_ZOOM = "pinch_zoom"
     private val CLEAR_CACHE = "clear_cache"
+    private val HIDE_SETTINGS = "hide_settings_after_timeout"
 
     /** Returns the currently persisted settings (defaults if never saved). */
     fun getSettings(): KioskSettings {
@@ -53,7 +54,8 @@ class SettingsRepository(private val prefs: SharedPreferences) {
             },
             autoReloadIntervalSeconds = prefs.getInt(AUTO_RELOAD_INTERVAL, 30).coerceIn(5, 3600),
             pinchZoomEnabled = prefs.getBoolean(PINCH_ZOOM, true),
-            clearCacheOnRefresh = prefs.getBoolean(CLEAR_CACHE, false)
+            clearCacheOnRefresh = prefs.getBoolean(CLEAR_CACHE, false),
+            hideSettingsAfterTimeout = prefs.getBoolean(HIDE_SETTINGS, false)
         )
     }
 
@@ -73,6 +75,7 @@ class SettingsRepository(private val prefs: SharedPreferences) {
             .putInt(AUTO_RELOAD_INTERVAL, settings.autoReloadIntervalSeconds)
             .putBoolean(PINCH_ZOOM, settings.pinchZoomEnabled)
             .putBoolean(CLEAR_CACHE, settings.clearCacheOnRefresh)
+            .putBoolean(HIDE_SETTINGS, settings.hideSettingsAfterTimeout)
             .apply() // asynchronous; sufficient for settings persistence
         return true
     }

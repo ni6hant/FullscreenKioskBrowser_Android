@@ -26,7 +26,8 @@ data class KioskSettings(
     val orientationLock: String = "auto",
     val autoReloadIntervalSeconds: Int = 30,
     val pinchZoomEnabled: Boolean = true,
-    val clearCacheOnRefresh: Boolean = false
+    val clearCacheOnRefresh: Boolean = false,
+    val hideSettingsAfterTimeout: Boolean = false
 )
 
 object OrientationLock {

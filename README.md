@@ -49,6 +49,7 @@ On first launch, if no URL is saved, the settings panel opens. Enter a valid `ht
 | Auto-reload cooldown (seconds) | 5-3600, default 30. Minimum spacing between automatic reloads (connectivity/WebView errors) to prevent reload loops. |
 | Pinch to zoom (two fingers) | Enable/disable pinch-to-zoom on the page. |
 | Clear cache on every refresh | Clear the WebView cache before each reload. |
+| Hide settings button after 10 seconds | Completely hide the settings handle after 10s (still shows for 10s on every app start). Handle turns red in this mode. |
 | Low battery threshold (%) | 0–100, default 20%. |
 | Low battery action | `None` or `Pause refreshes`. |
 | Forced orientation | `Auto`, `Landscape`, `Portrait`, `Reverse Landscape`, `Reverse Portrait`. |

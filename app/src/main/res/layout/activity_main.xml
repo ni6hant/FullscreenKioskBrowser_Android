@@ -274,6 +274,13 @@
                 android:layout_marginBottom="@dimen/settings_field_margin"
                 android:text="Clear cache on every refresh" />
 
+            <CheckBox
+                android:id="@+id/settings_hide_after_timeout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/settings_field_margin"
+                android:text="Hide settings button after 10 seconds" />
+
             <TextView
                 android:id="@+id/settings_battery_disclaimer"
                 android:layout_width="match_parent"

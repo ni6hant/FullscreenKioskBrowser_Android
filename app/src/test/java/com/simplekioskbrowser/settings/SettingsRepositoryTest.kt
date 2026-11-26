@@ -81,6 +81,7 @@ class SettingsRepositoryTest {
         assertEquals(BatteryAction.NONE, s.batteryAction)
         assertEquals(OrientationLock.AUTO, s.orientationLock)
         assertEquals(30, s.autoReloadIntervalSeconds)
+        assertFalse(s.hideSettingsAfterTimeout)
     }
 
     @Test

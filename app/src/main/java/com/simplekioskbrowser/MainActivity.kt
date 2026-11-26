@@ -47,6 +47,7 @@ class MainActivity : Activity() {
 
     private var reloadOnConnectivity = false
     private var reloadOnWebViewError = false
+    private var hideSettingsAfterTimeout = false
 
     private val handleHandler = Handler(Looper.getMainLooper())
     private var handleCollapseRunnable: Runnable? = null
@@ -252,11 +253,21 @@ class MainActivity : Activity() {
 
     private fun collapseSettingsHandle() {
         binding.settingsHandle.animate().cancel()
-        val collapsedOffset = dpToPx(56 - 16) // show only 16dp tab
-        binding.settingsHandle.animate()
-            .translationX(collapsedOffset.toFloat())
-            .setDuration(300)
-            .start()
+        if (hideSettingsAfterTimeout) {
+            // Completely hide the handle off-screen.
+            val fullOffset = dpToPx(56)
+            binding.settingsHandle.animate()
+                .translationX(fullOffset.toFloat())
+                .setDuration(300)
+                .start()
+        } else {
+            // Show only a 16dp tab.
+            val collapsedOffset = dpToPx(56 - 16)
+            binding.settingsHandle.animate()
+                .translationX(collapsedOffset.toFloat())
+                .setDuration(300)
+                .start()
+        }
     }
 
     private fun scheduleHandleCollapse() {
@@ -288,6 +299,7 @@ class MainActivity : Activity() {
         binding.settingsAutoReloadInterval.setText(settings.autoReloadIntervalSeconds.toString())
         binding.settingsPinchZoom.isChecked = settings.pinchZoomEnabled
         binding.settingsClearCache.isChecked = settings.clearCacheOnRefresh
+        binding.settingsHideAfterTimeout.isChecked = settings.hideSettingsAfterTimeout
     }
 
     private fun readSettings(): KioskSettings {
@@ -324,7 +336,8 @@ class MainActivity : Activity() {
             orientationLock = orientation,
             autoReloadIntervalSeconds = autoReloadSeconds,
             pinchZoomEnabled = binding.settingsPinchZoom.isChecked,
-            clearCacheOnRefresh = binding.settingsClearCache.isChecked
+            clearCacheOnRefresh = binding.settingsClearCache.isChecked,
+            hideSettingsAfterTimeout = binding.settingsHideAfterTimeout.isChecked
         )
     }
 
@@ -354,6 +367,11 @@ class MainActivity : Activity() {
         // Pinch-to-zoom and clear-cache-on-refresh toggles.
         webViewController.pinchZoomEnabled = settings.pinchZoomEnabled
         webViewController.clearCacheOnRefresh = settings.clearCacheOnRefresh
+
+        hideSettingsAfterTimeout = settings.hideSettingsAfterTimeout
+        // Update handle color: red when hide mode is on.
+        val iconColor = if (hideSettingsAfterTimeout) android.graphics.Color.RED else android.graphics.Color.WHITE
+        (binding.settingsHandle.getChildAt(0) as? android.widget.ImageView)?.setColorFilter(iconColor)
 
         // Forced orientation (FR optional: Auto/Landscape/Portrait/Reverse Landscape/Reverse Portrait)
         requestedOrientation = when (settings.orientationLock) {
