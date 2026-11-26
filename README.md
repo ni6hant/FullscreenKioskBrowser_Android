@@ -33,7 +33,7 @@ Output APK: `app/build/outputs/apk/debug/app-debug.apk`
 
 ```powershell
 adb install -r app\build\outputs\apk\debug\app-debug.apk
-adb shell am start -n com.simplekioskbrowser/.MainActivity
+adb shell am start -n com.ni6hant.fullscreen_kiosk_browser/com.simplekioskbrowser.MainActivity
 ```
 
 ## First-run setup
