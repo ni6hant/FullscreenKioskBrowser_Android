@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple Kiosk Browser</string>
+    <string name="app_name">Fullscreen Kiosk Browse</string>
 
     <!-- Settings panel -->
     <string name="settings_title">Settings</string>
