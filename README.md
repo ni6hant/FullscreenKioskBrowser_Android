@@ -1,5 +1,8 @@
 # Fullscreen Kiosk Browser
 
+[![Get it on Google Play](app/assets/play.png)](https://play.google.com/store/apps/details?id=com.ni6hant.fullscreen_kiosk_browser)
+[![Get it on GitHub](app/assets/github.png)](https://github.com/ni6hant/FullscreenKioskBrowser_Android/releases)
+
 > **Declaration:** This initial APK release was generated with the assistance of an LLM (large language model). The author plans to manually review and modify the code going forward without LLM assistance.
 
 A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a translucent gear icon handle in the top-right corner.
