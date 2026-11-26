@@ -4,6 +4,8 @@
 # Generated APKs and build outputs
 app/build/
 build/
+*.apk
+*.aab
 
 # Gradle wrapper cache and daemon
 .gradle/
@@ -19,6 +21,7 @@ build/
 
 # Local SDK / property files (machine-specific; do not commit)
 local.properties
+keystore.properties
 *.keystore
 *.jks
 *.key
