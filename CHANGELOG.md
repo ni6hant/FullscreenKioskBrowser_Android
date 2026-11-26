@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.1] - 2026-11-26
+## [1.0] - 2026-11-26
 
 ### What's New
 - **New settings access method**: Replaced the left-edge swipe gesture with a translucent gear icon handle in the top-right corner. It expands for 10 seconds on app start, then collapses to a small tab. Tap the visible tab to open settings.
