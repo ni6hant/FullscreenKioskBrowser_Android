@@ -10,13 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Left-edge gesture strip. Only a deliberate inward horizontal swipe opens settings. -->
-    <com.simplekioskbrowser.ui.EdgeSwipeView
-        android:id="@+id/edge_swipe_view"
-        android:layout_width="@dimen/edge_strip_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent" />
+    <!-- Settings hover handle: translucent button at the top-right. Only a small tab is
+         visible by default; it expands for 10 seconds on app open, then collapses.
+         Tapping the visible portion opens the settings panel. -->
+    <Button
+        android:id="@+id/settings_handle"
+        android:layout_width="56dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="0dp"
+        android:background="#88000000"
+        android:text="⚙"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="visible" />
 
     <!-- Dimmed scrim shown behind the settings panel when it is open. -->
     <View

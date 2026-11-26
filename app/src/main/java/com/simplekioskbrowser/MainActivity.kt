@@ -4,12 +4,13 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.simplekioskbrowser.databinding.ActivityMainBinding
 import com.simplekioskbrowser.battery.BatteryInfo
 import com.simplekioskbrowser.battery.BatteryMonitor
@@ -23,7 +24,6 @@ import com.simplekioskbrowser.settings.KioskSettings
 import com.simplekioskbrowser.settings.OrientationLock
 import com.simplekioskbrowser.settings.SettingsRepository
 import com.simplekioskbrowser.settings.SettingsValidation
-import com.simplekioskbrowser.ui.EdgeSwipeView
 import com.simplekioskbrowser.webview.WebViewController
 
 /**
@@ -47,6 +47,9 @@ class MainActivity : Activity() {
 
     private var reloadOnConnectivity = false
     private var reloadOnWebViewError = false
+
+    private val handleHandler = Handler(Looper.getMainLooper())
+    private var handleCollapseRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,9 +112,13 @@ class MainActivity : Activity() {
             }
         )
 
-        // --- Hidden edge gesture ---
-        binding.edgeSwipeView.setOnEdgeSwipeListener { toggleSettingsPanel() }
+        // --- Settings hover handle (top-right) ---
         binding.settingsScrim.setOnClickListener { closeSettingsPanel() }
+        binding.settingsHandle.setOnClickListener { openSettingsPanel() }
+        binding.settingsHandle.post {
+            expandSettingsHandle()
+            scheduleHandleCollapse()
+        }
 
         // --- Settings form actions ---
         binding.settingsSave.setOnClickListener { onSaveSettings() }
@@ -157,6 +164,12 @@ class MainActivity : Activity() {
             lastBatteryInfo = info
             lowBatteryPolicy.evaluate(info)
         }
+
+        // Re-expand the settings handle for 10 seconds on (re)open.
+        binding.settingsHandle.post {
+            expandSettingsHandle()
+            scheduleHandleCollapse()
+        }
     }
 
     override fun onPause() {
@@ -165,6 +178,7 @@ class MainActivity : Activity() {
         periodicScheduler.pause()
         connectivityMonitor.stop()
         batteryMonitor.stop()
+        handleCollapseRunnable?.let { handleHandler.removeCallbacks(it) }
     }
 
     override fun onDestroy() {
@@ -225,6 +239,31 @@ class MainActivity : Activity() {
             }
             .start()
         settingsPanelOpen = false
+    }
+
+    // --- Settings hover handle (top-right) ---
+    private fun dpToPx(dp: Int): Int =
+        (dp * resources.displayMetrics.density).toInt()
+
+    private fun expandSettingsHandle() {
+        binding.settingsHandle.animate().cancel()
+        binding.settingsHandle.translationX = 0f
+    }
+
+    private fun collapseSettingsHandle() {
+        binding.settingsHandle.animate().cancel()
+        val collapsedOffset = dpToPx(56 - 16) // show only 16dp tab
+        binding.settingsHandle.animate()
+            .translationX(collapsedOffset.toFloat())
+            .setDuration(300)
+            .start()
+    }
+
+    private fun scheduleHandleCollapse() {
+        handleCollapseRunnable?.let { handleHandler.removeCallbacks(it) }
+        val r = Runnable { collapseSettingsHandle() }
+        handleCollapseRunnable = r
+        handleHandler.postDelayed(r, 10_000)
     }
 
     private fun populateForm(settings: KioskSettings) {
