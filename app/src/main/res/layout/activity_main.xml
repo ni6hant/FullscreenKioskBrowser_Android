@@ -13,7 +13,7 @@
     <!-- Settings hover handle: translucent button at the top-right. Only a small tab is
          visible by default; it expands for 10 seconds on app open, then collapses.
          Tapping the visible portion opens the settings panel. -->
-    <ImageView
+    <FrameLayout
         android:id="@+id/settings_handle"
         android:layout_width="56dp"
         android:layout_height="48dp"
@@ -21,9 +21,17 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="0dp"
         android:background="#88000000"
-        android:src="@drawable/ic_settings_handle"
-        android:scaleType="center"
-        android:visibility="visible" />
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_settings_handle"
+            android:scaleType="center" />
+    </FrameLayout>
 
     <!-- Dimmed scrim shown behind the settings panel when it is open. -->
     <View
