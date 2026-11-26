@@ -22,7 +22,7 @@
 **Exit criteria:** site loads on emulator/device; foreground display remains awake; no unsafe TLS handling.
 
 ## Phase 3 — Hidden settings interaction
-- Implement edge swipe gesture and settings panel.
+- Implement settings hover handle (translucent gear icon, top-right) and settings panel.
 - Add URL editing, network recovery, periodic reload and battery settings.
 - Persist settings and reapply them on launch.
 **Exit criteria:** settings panel opens/returns; saved settings survive restart; gesture interaction tested.
@@ -60,6 +60,6 @@
 
 ## Testing strategy
 - Unit tests: URL parsing/validation, settings validation, reload debounce/coalescing, threshold logic, interval calculation.
-- UI/instrumentation: settings gesture, save/apply, page navigation and fullscreen behavior.
+- UI/instrumentation: settings handle, save/apply, page navigation and fullscreen behavior.
 - ADB device tests: installation, launch, URL load, screen-on behavior, network loss/restoration, timed refresh, battery threshold/action where safely testable.
-- Manual tests: site-specific behavior, Android system gesture interactions, edge gesture false positives, interruption/recovery.
+- Manual tests: site-specific behavior, Android system gesture interactions, handle false positives, interruption/recovery.

@@ -62,11 +62,10 @@ Settings saved → repository validates and persists → UI observes changes →
 - Keep screen awake through activity window flag while foreground; screen-on flags are not a substitute for kiosk lockdown.
 - Fullscreen/immersive mode is best-effort and can be interrupted by Android system gestures or policies.
 
-## 7. Hidden gesture
-Use a carefully tested left-edge swipe detector (starting within a configurable narrow edge region, moving inward past distance/velocity threshold). Avoid consuming ordinary touch interactions unless gesture is recognized. Consider Compose gesture handling or a small custom view. Settings panel should be overlay/drawer-like and reversible.
+## 7. Settings handle\nA translucent gear-icon handle anchored at the top-right corner. It expands fully for 10 seconds on app open, then collapses to a small (or fully hidden, when "hide after 10s" mode is enabled) tab. Tapping the visible portion opens the settings panel. The handle is red when hide-mode is active. Settings panel is overlay/drawer-like and reversible.
 
 ## 8. Battery policy feasibility
-A normal application cannot reliably and universally power off the display on demand without special device-admin/device-owner permissions or manufacturer-specific APIs. The agent must inspect the device and Android version, evaluate supported mechanisms, and choose an honest fallback. Locking the device may require Device Admin permission and user setup, while device-owner kiosk controls require provisioning. Do not automatically provision device owner, change system settings, or lock the device without user authorization. A black/dim UI is not the same as powering off the screen; label it accurately.
+A normal application cannot reliably and universally power off the display on demand without special device-admin/device-owner permissions or manufacturer-specific APIs. The agent must inspect the device and Android version, evaluate supported mechanisms, and choose an honest fallback. Locking the device may require Device Admin permission and user setup, while device-owner kiosk controls require provisioning. Do not automatically provision device owner, change system settings, or lock the device without user authorization. Brightness is controlled by the system; this app never dims the screen.
 
 ## 9. Testing and device
 Requester supplied an ADB-connected device identifier: `ab082808`. Before tests, run `adb devices -l` and inspect `adb shell getprop ro.build.version.release`, `adb shell getprop ro.build.version.sdk`, and manufacturer/model properties. Confirm serial still exists and is authorized. Build/install/launch and test on device where feasible. Do not use ADB to alter unrelated device settings or wipe data. Record evidence and limitations.

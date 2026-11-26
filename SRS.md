@@ -8,11 +8,11 @@ Define an MVP single-page Android kiosk browser. The app is intended to show a u
 - **FR-02 Web display:** Display the saved URL in an Android WebView occupying the primary screen.
 - **FR-03 Fullscreen:** Hide system bars using supported immersive APIs, reapply immersive presentation when appropriate, and handle system gestures without claiming absolute OS lockdown.
 - **FR-04 Keep awake:** Keep the display awake while the kiosk screen is foregrounded using supported activity-level mechanisms; release behavior must be correct when app leaves foreground.
-- **FR-05 Hidden settings gesture:** A swipe inward from the left edge opens the settings panel. Settings panel provides configuration and a return-to-page action. The gesture must not interfere excessively with page interactions.
+- **FR-05 Hidden settings gesture:** A translucent gear icon handle in the top-right corner opens the settings panel. It expands for 10 seconds on app open, then collapses to a small tab (or fully hides in "hide after 10s" mode). Settings panel provides configuration and a return-to-page action. The handle must not interfere excessively with page interactions.
 - **FR-06 Network recovery:** When network connectivity is lost, optionally show a discreet offline/recovery state. When connectivity returns, reload or retry the configured page if enabled. Avoid repeated reload loops.
 - **FR-07 Web failure recovery:** Optionally retry/reload on WebView network-related errors. Do not treat every HTTP response (including legitimate site error pages) as a network disconnect unless explicitly defined.
 - **FR-08 Timed reload:** Enable/disable periodic refresh and configure a valid interval and unit. Default interval should be conservative; recommend 5 minutes as a default only if enabled. Refresh must be lifecycle-aware and must not accumulate timers.
-- **FR-09 Battery threshold:** Configurable battery threshold, default 20%, and configurable action. MVP must evaluate feasibility of screen-off/lock behavior on the actual device. If true screen-off is not permitted, report constraints and implement only a safe, explicitly described fallback (such as a dim/black screen or user-visible pause) rather than claiming the screen is powered off.
+- **FR-09 Battery threshold:** Configurable battery threshold, default 20%, and configurable action. MVP must evaluate feasibility of screen-off/lock behavior on the actual device. If true screen-off is not permitted, report constraints and implement only a safe, explicitly described fallback (such as a user-visible pause) rather than claiming the screen is powered off.
 - **FR-10 Persistence:** Save settings locally across app restarts.
 - **FR-11 Initial setup:** If no URL is configured, show settings/setup rather than loading a blank or fabricated URL.
 - **FR-12 Recovery and state:** On app restart, restore saved settings and load configured URL. Handle WebView renderer/process loss gracefully where possible.
@@ -33,7 +33,7 @@ Define an MVP single-page Android kiosk browser. The app is intended to show a u
 2. If no URL is saved, reveal/display setup settings.
 3. Enter URL and relevant toggles/interval/threshold.
 4. Save and load the site.
-5. Settings can be reopened by left-edge swipe.
+5. Settings can be reopened by tapping the translucent gear icon handle in the top-right corner.
 
 ### Normal operation
 1. Saved URL opens fullscreen.
@@ -71,7 +71,7 @@ Define an MVP single-page Android kiosk browser. The app is intended to show a u
 - Avoid exposing JavaScript interfaces to arbitrary page content.
 - Restrict file/content access in WebView unless specifically justified and documented.
 - Do not include credentials or secrets in logs.
-- Settings gesture is obscurity, not authentication. Agent may recommend optional PIN protection, but must not add it as a mandatory requirement without explaining.
+- Settings handle is obscurity, not authentication. Agent may recommend optional PIN protection, but must not add it as a mandatory requirement without explaining.
 
 ## 8. Error handling
 - Invalid URL or interval: show validation feedback and retain previous valid configuration.
@@ -87,7 +87,7 @@ Define an MVP single-page Android kiosk browser. The app is intended to show a u
 - AC-03 Valid saved URL renders in WebView.
 - AC-04 Fullscreen presentation is applied and survives relevant UI/lifecycle transitions.
 - AC-05 Keep-awake behavior works while app is foregrounded.
-- AC-06 Left-edge swipe reliably opens settings; return gesture/control restores page.
+- AC-06 Translucent settings handle reliably opens settings; return control restores page.
 - AC-07 Settings persist across process/app restart.
 - AC-08 Network loss/restoration recovery is demonstrated or documented with device test evidence.
 - AC-09 Timed reload works at selected interval and can be disabled; no duplicate timers.

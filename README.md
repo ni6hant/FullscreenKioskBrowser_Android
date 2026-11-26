@@ -1,8 +1,8 @@
-# Simple Android Kiosk Browser
+# Fullscreen Kiosk Browser
 
 > **Declaration:** This initial APK release was generated with the assistance of an LLM (large language model). The author plans to manually review and modify the code going forward without LLM assistance.
 
-A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a discreet left-edge swipe.
+A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a translucent gear icon handle in the top-right corner.
 
 ## Device used for verification
 - Xiaomi M2101K6P (Redmi Note 10), LineageOS
@@ -35,7 +35,7 @@ adb shell am start -n com.simplekioskbrowser/.MainActivity
 
 ## First-run setup
 
-On first launch, if no URL is saved, the settings panel opens. Enter a valid `http://` or `https://` URL, then tap **SAVE**. The page loads fullscreen and stays awake. Open settings again anytime by swiping inward from the left screen edge; tap **RETURN TO PAGE** to close settings.
+On first launch, if no URL is saved, the settings panel opens. Enter a valid `http://` or `https://` URL, then tap **SAVE**. The page loads fullscreen and stays awake. Open settings anytime by tapping the translucent gear icon in the top-right corner; tap \*\*RETURN TO PAGE\*\* to close settings.
 
 ## Settings
 
