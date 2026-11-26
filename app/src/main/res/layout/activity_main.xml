@@ -20,7 +20,7 @@
         android:layout_gravity="top|end"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="0dp"
-        android:background="#88000000"
+        android:background="#60ADD8E6"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible">
