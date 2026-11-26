@@ -373,6 +373,12 @@ class MainActivity : Activity() {
         val iconColor = if (hideSettingsAfterTimeout) android.graphics.Color.RED else android.graphics.Color.WHITE
         (binding.settingsHandle.getChildAt(0) as? android.widget.ImageView)?.setColorFilter(iconColor)
 
+        // Re-trigger the 10-second collapse with the new hide-mode setting.
+        binding.settingsHandle.post {
+            expandSettingsHandle()
+            scheduleHandleCollapse()
+        }
+
         // Forced orientation (FR optional: Auto/Landscape/Portrait/Reverse Landscape/Reverse Portrait)
         requestedOrientation = when (settings.orientationLock) {
             OrientationLock.LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
