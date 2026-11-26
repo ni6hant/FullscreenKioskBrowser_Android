@@ -19,7 +19,7 @@ android {
         applicationId = 'com.ni6hant.fullscreen_kiosk_browser'
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
+        versionCode = 3
         versionName = '1.1'
     }
 
