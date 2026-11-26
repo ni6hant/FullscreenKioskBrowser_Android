@@ -33,7 +33,7 @@
             android:scaleType="center" />
     </FrameLayout>
 
-    <!-- Dimmed scrim shown behind the settings panel when it is open. -->
+    <!-- Scrim shown behind the settings panel when it is open. -->
     <View
         android:id="@+id/settings_scrim"
         android:layout_width="match_parent"

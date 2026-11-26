@@ -12,8 +12,8 @@ import com.simplekioskbrowser.settings.BatteryAction
  *  - "pause": signals the UI to pause refreshes and show a low-battery notice.
  *  - "none": no action.
  *
- * Brightness is left to the system: this app does not dim the screen. When the battery rises
- * above the threshold or the device is plugged in, refreshes resume.
+ * Brightness is controlled by the system. When the battery rises above the threshold or the
+ * device is plugged in, refreshes resume.
  */
 class LowBatteryPolicy(
     private val activity: Activity,

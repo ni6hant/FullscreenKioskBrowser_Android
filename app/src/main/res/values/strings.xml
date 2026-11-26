@@ -19,7 +19,6 @@
     <string name="settings_battery_hint">20</string>
     <string name="settings_battery_action">Low battery action</string>
     <string name="settings_action_none">None</string>
-    <string name="settings_action_dim">Dim screen (not a true power-off)</string>
     <string name="settings_action_pause">Pause refreshes</string>
 
     <!-- States -->
@@ -32,5 +31,5 @@
     <string name="action_retry">Retry</string>
 
     <!-- Battery action disclosure -->
-    <string name="battery_disclaimer">This app cannot power off or lock the screen without device-owner/DPC provisioning. The \"Dim screen\" option lowers this app window\u2019s brightness only; it is not a true screen power-off.</string>
+    <string name="battery_disclaimer">This app cannot power off or lock the screen without device-owner/DPC provisioning. Brightness is controlled by the system.</string>
 </resources>
