@@ -15,11 +15,11 @@ Total tokens used: <**280M** on **`beam-free`** (mainly used) and **1.34M** on *
 
 ## Screenshots
 
-![[]](screenshots/1.avif)
-![[]](screenshots/2.avif)
-![[]](screenshots/3.avif)
-![[]](screenshots/4.avif)
-![[]](screenshots/5.avif)
+![[]](screenshots/1.webp)
+![[]](screenshots/2.webp)
+![[]](screenshots/3.webp)
+![[]](screenshots/4.webp)
+![[]](screenshots/5.webp)
 
 
 
