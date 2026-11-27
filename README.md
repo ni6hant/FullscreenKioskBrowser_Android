@@ -5,6 +5,9 @@
 
 > **Declaration:** This initial APK release was generated with the assistance of an LLM (large language model). The author plans to manually review and modify the code going forward without LLM assistance.
 
+> Until Play Store Initial Version 1.3: 
+Total tokens used: <**280M** on **`beam-free`** (mainly used) and **1.34M** on **`nemotron-3.5-super-vl-free`**. Also, <20k free tokens on ChatGPT to generate the Agent work.
+
 A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a translucent gear icon handle in the top-right corner.
 
 ## Device used for verification
