@@ -1,14 +1,28 @@
 # Fullscreen Kiosk Browser
 
+A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a translucent gear icon handle in the top-right corner.
+
 [![Get it on Google Play](app/assets/play.png)](https://play.google.com/store/apps/details?id=com.ni6hant.fullscreen_kiosk_browser)
 [![Get it on GitHub](app/assets/github.png)](https://github.com/ni6hant/FullscreenKioskBrowser_Android/releases)
 
-> **Declaration:** This initial APK release was generated with the assistance of an LLM (large language model). The author plans to manually review and modify the code going forward without LLM assistance.
+
+> **LLM Declaration:** This initial 1.3 release was generated with free LLM with OpenCode(Agentic) model: **Beam Free**. The author plans to manually review and modify the code going forward without LLM assistance.
+
 
 > Until Play Store Initial Version 1.3: 
 Total tokens used: <**280M** on **`beam-free`** (mainly used) and **1.34M** on **`nemotron-3.5-super-vl-free`**. Also, <20k free tokens on ChatGPT to generate the Agent work.
 
-A lightweight Android app that displays one configurable website in a fullscreen WebView, keeps the display awake during kiosk operation, and automatically recovers from common connectivity and page-staleness conditions. Settings are accessed through a translucent gear icon handle in the top-right corner.
+
+## Screenshots
+
+![[]](screenshots/1.avif)
+![[]](screenshots/2.avif)
+![[]](screenshots/3.avif)
+![[]](screenshots/4.avif)
+![[]](screenshots/5.avif)
+
+
+
 
 ## Device used for verification
 - Xiaomi M2101K6P (Redmi Note 10), LineageOS
