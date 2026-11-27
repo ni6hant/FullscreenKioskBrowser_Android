@@ -15,11 +15,11 @@ Total tokens used: <**280M** on **`beam-free`** (mainly used) and **1.34M** on *
 
 ## Screenshots
 
-![[]](screenshots/1.webp)
-![[]](screenshots/2.webp)
-![[]](screenshots/3.webp)
-![[]](screenshots/4.webp)
-![[]](screenshots/5.webp)
+![Setting Menu](screenshot/1.webp)
+![Setting Menu Hovering - Temporarily Visible](screenshot/2.webp)
+![Setting Paritally Hidden](screenshot/3.webp)
+![Setting Completely Hidden Mode - Temporarily Visible](screenshot/4.webp)
+![Setting Completely Hidden](screenshot/5.webp)
 
 
 
